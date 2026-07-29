@@ -18,6 +18,7 @@ AI Chatbot Assistant: Built-in Gemini-powered assistant widget ready to answer t
 
 🚀 Quick Start
 Clone or download this repository.
+bauan-tourism-5mgv.vercel.app
 
 Ensure you have the following core files in your project directory:
 
