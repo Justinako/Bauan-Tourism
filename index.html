@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page_title">Bauan | Batangas Tourism</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- External CSS Link -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Updated Styles: Enhanced UI with Full-Width Atmospheric Navbar Background & Polish -->
+    <style>
+      :root {
+        --bg-main: #0b0c10;
+        --nav-bg: rgba(11, 12, 16, 0.85);
+        --accent-orange: #f97316;
+        --text-main: #ffffff;
+        --text-muted: #9ca3af;
+        --border-glass: rgba(255, 255, 255, 0.08);
+      }
+
+      /* Global Page Wrapper to ensure no awkward grey margins outside */
+      html, body {
+        background-color: var(--bg-main) !important;
+        color: var(--text-main);
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* --- ENHANCED NAVBAR WITH BACKGROUND & GLASSMORPHISM --- */
+      nav {
+        background-color: var(--nav-bg) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 32px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid var(--border-glass);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      nav .logo {
+        color: var(--text-main) !important;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        letter-spacing: 0.5px;
+      }
+
+      nav .logo span {
+        color: var(--accent-orange);
+      }
+
+      .nav-logo-img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(249, 115, 22, 0.4);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      }
+
+      /* Desktop Links */
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 28px;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+      }
+
+      .nav-links li a {
+        color: #d1d5db;
+        text-decoration: none;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: color 0.2s ease, text-shadow 0.2s ease;
+      }
+
+      .nav-links li a:hover, 
+      .nav-links li a.active-link {
+        color: var(--accent-orange);
+        text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+      }
+
+      /* Language Selector Styling (Enhanced UI) */
+      .lang-selector-wrapper select {
+        background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 8px 18px;
+        border-radius: 50px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 500;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .lang-selector-wrapper select:hover {
+        border-color: var(--accent-orange);
+        box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
+      }
+
+      /* Hamburger Button UI Polish */
+      .hamburger-btn {
+        display: none;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 38px;
+        height: 38px;
+        padding: 8px;
+        border-radius: 8px;
+        z-index: 1020;
+        transition: background 0.2s;
+      }
+
+      .hamburger-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .hamburger-btn .bar {
+        display: block;
+        width: 100%;
+        height: 2.5px;
+        background-color: #ffffff;
+        border-radius: 2px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+
+      .hamburger-btn.active .bar:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      .hamburger-btn.active .bar:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger-btn.active .bar:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      /* Mobile Slide-out Drawer Overlay */
+      .menu-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(6px);
+        display: flex;
+        justify-content: flex-end;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 1010;
+      }
+
+      .menu-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .menu-sheet {
+        width: 300px;
+        height: 100%;
+        background: #111827;
+        padding: 35px 25px;
+        box-sizing: border-box;
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.6);
+        border-left: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .menu-overlay.open .menu-sheet {
+        transform: translateX(0);
+      }
+
+      .menu-header h3 {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin: 0 0 20px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 12px;
+      }
+
+      .menu-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .menu-links li a {
+        color: #ffffff;
+        text-decoration: none;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 500;
+        display: block;
+        padding: 6px 0;
+        transition: color 0.2s;
+      }
+
+      .menu-links li a:hover {
+        color: var(--accent-orange);
+      }
+
+      /* --- FOOTER & CONTACT MOBILE OPTIMIZATIONS --- */
+      .contact-info {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .contact-info li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .contact-info li i {
+        flex-shrink: 0;
+        margin-top: 4px;
+        color: var(--accent-orange);
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 12px 18px;
+        }
+        .footer-grid {
+          padding: 0 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 30px;
+        }
+        .footer-column {
+          width: 100%;
+        }
+        
+        body {
+          font-size: 15px;
+          line-height: 1.6;
+        }
+
+        .home-content p, 
+        .footer-brand p, 
+        .about-text p, 
+        .travel-card p,
+        .card-content p {
+          font-size: 0.9rem !important;
+          line-height: 1.6 !important;
+        }
+
+        .contact-info li span {
+          font-size: 0.9rem !important;
+          letter-spacing: -0.2px;
+          white-space: nowrap; 
+        }
+
+        h1 {
+          font-size: 1.8rem !important;
+        }
+        h2 {
+          font-size: 1.3rem !important;
+        }
+        h3 {
+          font-size: 1.1rem !important;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .nav-links {
+          display: none !important;
+        }
+        .hamburger-btn {
+          display: flex !important;
+        }
+      }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar with Full Atmospheric Background & Glassmorphism -->
+    <nav id="mainNav">
+        <a data-target="home" class="logo nav-btn">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStfb1LD4WvgZ2qoeMg55h-DRWd53v5XGky3ucEhBZlXJflc1r1-LQKTEM&s=10" alt="Bauan Logo" class="nav-logo-img">
+            Bauan<span>.</span>
+        </a>
+        
+        <!-- Desktop Nav Links -->
+        <ul class="nav-links" id="navLinks">
+            <li><a data-target="home" class="nav-btn active-link" data-i18n="nav_home">Home</a></li>
+            <li><a data-target="about" class="nav-btn" data-i18n="nav_about">About</a></li>
+            <li><a data-target="destinations" class="nav-btn" data-i18n="nav_destinations">Destinations</a></li>
+            <li><a data-target="activities" class="nav-btn" data-i18n="nav_activities">Activities</a></li>
+            <li><a data-target="guide" class="nav-btn" data-i18n="nav_guide">Travel Guide</a></li>
+            <li><a data-target="gallery" class="nav-btn" data-i18n="nav_gallery">Gallery</a></li>
+            <li><a data-target="reviews" class="nav-btn" data-i18n="nav_reviews">Reviews</a></li>
+        </ul>
+        
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- Multi-Language Dropdown Toggle -->
+            <div class="lang-selector-wrapper">
+                <select id="langToggle" class="lang-select" onchange="switchLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="tl">Tagalog</option>
+                </select>
+            </div>
+
+            <!-- Hamburger Button for Mobile -->
+            <button id="hamburger-btn" class="hamburger-btn" aria-label="Open Menu" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- SLIDE-OUT MOBILE MENU OVERLAY -->
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true">
+        <div class="menu-sheet">
+            <div class="menu-header">
+                <h3 data-i18n="menu_header_title">Navigation Menu</h3>
+            </div>
+            <ul class="menu-links">
+                <li><a data-target="home" class="nav-btn" data-i18n="nav_home">🏠 Home</a></li>
+                <li><a data-target="about" class="nav-btn" data-i18n="nav_about">👤 About</a></li>
+                <li><a data-target="destinations" class="nav-btn" data-i18n="nav_destinations">📍 Destinations</a></li>
+                <li><a data-target="activities" class="nav-btn" data-i18n="nav_activities">🏄 Activities</a></li>
+                <li><a data-target="guide" class="nav-btn" data-i18n="nav_guide">🗺️ Travel Guide</a></li>
+                <li><a data-target="gallery" class="nav-btn" data-i18n="nav_gallery">📷 Gallery</a></li>
+                <li><a data-target="reviews" class="nav-btn" data-i18n="nav_reviews">⭐ Reviews</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 1. HOME VIEW -->
+    <div id="home" class="window-view active-view">
+        <div class="hero-section">
+            <div class="slideshow-container">
+                <a href="#destinations" onclick="document.querySelector('[data-target=\'destinations\']').click()" class="slide active-slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoUixNNq5YaHqj8ihSOM9F49Iew9WniRPC5R64slDy9KAQ5zxMFks_OaqJpt7cfk3MyFL_ox-xhDS2VZD7S_6v0EyPQ3QDIsqxVtTjsMOJNgRnZBnSh56qTXvFqVDvP493KfhpplttO3so/s1600/SAMPAGUITA+BEACH+RESORT+BLOG+REVIEW.png'); display: block;"></a>
+                <a href="#destinations" onclick="document.querySelector('[data-target=\'destinations\']').click()" class="slide" style="background-image: url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/25/12/c2/9d/dive-and-trek.jpg?w=900&h=-1&s=1'); display: block;"></a>
+                <a href="#destinations" onclick="document.querySelector('[data-target=\'destinations\']').click()" class="slide" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDSPGltwbqmdQAoYk2HYtPD0PlU-BON-6y2RB3Wa09gWEEdYSHh1DI-zEQ&s=10'); display: block;"></a>
+            </div>
+            <div class="overlay"></div>
+            
+            <div class="home-content">
+                <h1 data-i18n="home_title">Discover <span>Bauan</span></h1>
+                <p data-i18n="home_desc">Experience pristine beaches, world-class diving spots, and the warm hospitality of Bauan — a hidden coastal gem in the heart of Batangas, Philippines.</p>
+                <button class="btn-primary" onclick="document.querySelector('[data-target=\'destinations\']').click()" data-i18n="home_btn">Explore Destinations &rarr;</button>
+            </div>
+            <div class="indicators">
+                <div class="dot active-dot" onclick="currentSlideManual(0)"></div>
+                <div class="dot" onclick="currentSlideManual(1)"></div>
+                <div class="dot" onclick="currentSlideManual(2)"></div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStfb1LD4WvgZ2qoeMg55h-DRWd53v5XGky3ucEhBZlXJflc1r1-LQKTEM&s=10" alt="Bauan Logo" class="footer-logo-img">
+                        Bauan<span>.</span>
+                    </h2>
+                    <p data-i18n="footer_desc">Your ultimate guide to exploring the beautiful coastal town of Bauan, Batangas. Discover pristine beaches, world-class diving, and rich Filipino culture.</p>
+                </div>
+                <div class="footer-column">
+                    <h3 data-i18n="footer_contact">Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fa-solid fa-location-dot"></i> <span>Bauan, Batangas, Philippines</span></li>
+                        <li><i class="fa-solid fa-phone"></i> <span>+63 43 723 0000</span></li>
+                        <li><i class="fa-regular fa-envelope"></i> <span>info@discoverbauan.ph</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom" data-i18n="footer_copy">&copy; 2026 Discover Bauan, Batangas. All Rights Reserved.</div>
+        </footer>
+    </div>
+
+    <!-- 2. ABOUT VIEW -->
+    <div id="about" class="window-view">
+        <div class="page-header">
+            <h1 data-i18n="about_heading">Our Story</h1>
+            <p data-i18n="about_subheading">Learn about the heritage, culture, and coastal identity of Bauan.</p>
+        </div>
+        <div class="content-container">
+            <span class="section-tag" data-i18n="about_tag">About The Town</span>
+            <h2 class="section-title" data-i18n="about_title">A Rich Heritage by the Sea</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p data-i18n="about_p1">The history of Bauan is a rich narrative of resilience, faith, and cultural heritage, beginning around 1590 when Augustinian priests founded a small settlement on the slopes of Mount Macolod near the shores of Taal Lake...</p>
+                    <p data-i18n="about_p2">Bauan’s spiritual and cultural identity deeply shaped its character, anchored by the discovery of a sacred wooden cross around 1595 that the townspeople believed protected them from natural disasters...</p>
+                    <button class="btn-primary" onclick="document.querySelector('[data-target=\'activities\']').click()" data-i18n="about_btn">View Activities</button>
+                </div>
+                
+                <div class="about-slideshow-wrapper" style="position: relative; border-radius: 16px; overflow: hidden; min-height: 350px; box-shadow: 0 10px 25px rgba(0,0,0,0.08);">
+                    <div class="slideshow-container about-slides" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        <a href="#gallery" onclick="document.querySelector('[data-target=\'gallery\']').click()" class="slide active-slide" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop'); background-size: cover; background-position: center; position: absolute; top:0; left:0; width:100%; height:100%; display:block;"></a>
+                        <a href="#gallery" onclick="document.querySelector('[data-target=\'gallery\']').click()" class="slide" style="background-image: url('https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmWPfaZvJhIDAfxl7ZALwHbCt1XK4PM2q6ScliJo9Q55TEV_TD6J6EjCTmgYodlCAF_5GF6YVrZqzHV6NPEjHWLv7P0C3efrwRZYgDI4xH7x0NqF5IL9v44G3d2rri2FwOQAIXH=s1360-w1360-h1020-rw'); background-size: cover; background-position: center; position: absolute; top:0; left:0; width:100%; height:100%; display:block;"></a>
+                        <a href="#gallery" onclick="document.querySelector('[data-target=\'gallery\']').click()" class="slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnQ_8ppTLLxOMRlEF2ceMs_kU0VcmcnQPmrgYNWEXopn5YbFnH3WAEkPusBmhxxFaspfcwgV_DelDmigumO6LP7Dw9NNKiBw4ldaOjC9Iym2n1A9ovIyLJ-mkdzCNH6ZYz3mfLEczCKgU/s1600/DSC_1491.jpeg'); background-size: cover; background-position: center; position: absolute; top:0; left:0; width:100%; height:100%; display:block;"></a>
+                    </div>
+                    <div class="indicators about-dots" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); z-index: 10;">
+                        <div class="dot active-dot" onclick="currentAboutSlideManual(0)"></div>
+                        <div class="dot" onclick="currentAboutSlideManual(1)"></div>
+                        <div class="dot" onclick="currentAboutSlideManual(2)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. DESTINATIONS VIEW -->
+    <div id="destinations" class="window-view">
+        <div class="page-header">
+            <h1 data-i18n="dest_heading">Top Destinations</h1>
+            <p data-i18n="dest_subheading">Explore the most breathtaking coastal sights and landmarks in Bauan.</p>
+        </div>
+        <div class="content-container">
+            <span class="section-tag" data-i18n="dest_tag">Must-Visit Places</span>
+            <h2 class="section-title" data-i18n="dest_title">Popular Attractions</h2>
+            <div class="card-grid">
+                <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoUixNNq5YaHqj8ihSOM9F49Iew9WniRPC5R64slDy9KAQ5zxMFks_OaqJpt7cfk3MyFL_ox-xhDS2VZD7S_6v0EyPQ3QDIsqxVtTjsMOJNgRnZBnSh56qTXvFqVDvP493KfhpplttO3so/s1600/SAMPAGUITA+BEACH+RESORT+BLOG+REVIEW.png" target="_blank" class="travel-card" style="text-decoration: none; color: inherit;">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoUixNNq5YaHqj8ihSOM9F49Iew9WniRPC5R64slDy9KAQ5zxMFks_OaqJpt7cfk3MyFL_ox-xhDS2VZD7S_6v0EyPQ3QDIsqxVtTjsMOJNgRnZBnSh56qTXvFqVDvP493KfhpplttO3so/s1600/SAMPAGUITA+BEACH+RESORT+BLOG+REVIEW.png" alt="Sampaguita Beach" class="card-img">
+                    <div class="card-content">
+                        <h3 data-i18n="dest_1_title">Sampaguita Beach</h3>
+                        <p data-i18n="dest_1_desc">A tranquil coastal getaway perfect for swimming, relaxing under the sun, and watching magnificent Batangas sunsets.</p>
+                    </div>
+                </a>
+                <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_UiL2RC-meAMOTclEAMiF_FY-PDSM5KdAMzjmPiaGpZ3YTbkfLO_K5zNj&s=10" target="_blank" class="travel-card" style="text-decoration: none; color: inherit;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_UiL2RC-meAMOTclEAMiF_FY-PDSM5KdAMzjmPiaGpZ3YTbkfLO_K5zNj&s=10" alt="Bauan Marine Sanctuaries" class="card-img">
+                    <div class="card-content">
+                        <h3 data-i18n="dest_2_title">Bauan Marine Sanctuaries</h3>
+                        <p data-i18n="dest_2_desc">World-renowned diving zones boasting vibrant coral reefs, sea turtles, and pristine underwater visibility.</p>
+                    </div>
+                </a>
+                <a href="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmWPfaZvJhIDAfxl7ZALwHbCt1XK4PM2q6ScliJo9Q55TEV_TD6J6EjCTmgYodlCAF_5GF6YVrZqzHV6NPEjHWLv7P0C3efrwRZYgDI4xH7x0NqF5IL9v44G3d2rri2FwOQAIXH=s1360-w1360-h1020-rw" target="_blank" class="travel-card" style="text-decoration: none; color: inherit;">
+                    <img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmWPfaZvJhIDAfxl7ZALwHbCt1XK4PM2q6ScliJo9Q55TEV_TD6J6EjCTmgYodlCAF_5GF6YVrZqzHV6NPEjHWLv7P0C3efrwRZYgDI4xH7x0NqF5IL9v44G3d2rri2FwOQAIXH=s1360-w1360-h1020-rw" alt="Immaculate Conception Parish" class="card-img">
+                    <div class="card-content">
+                        <h3 data-i18n="dest_3_title">Immaculate Conception Parish</h3>
+                        <p data-i18n="dest_3_desc">A historic architectural landmark standing as a proud symbol of Bauan's deep religious and cultural heritage.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. ACTIVITIES VIEW -->
+    <div id="activities" class="window-view">
+        <div class="page-header">
+            <h1 data-i18n="activ_heading">Things to Do</h1>
+            <p data-i18n="activ_subheading">Immerse yourself in adventure, water sports, and local culinary treats.</p>
+        </div>
+        <div class="content-container">
+            <span class="section-tag" data-i18n="activ_tag">Adventures & Cravings</span>
+            <h2 class="section-title" data-i18n="activ_title">Endless Experiences</h2>
+            <div class="card-grid">
+                <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP3PUiQCgbmx_M5PqPbxR0KmZomomBNExlfAO3AWY45tNZ2bBG8QCh7I5_&s=10" target="_blank" class="travel-card" style="text-decoration: none; color: inherit;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP3PUiQCgbmx_M5PqPbxR0KmZomomBNExlfAO3AWY45tNZ2bBG8QCh7I5_&s=10" alt="Scuba Diving" class="card-img">
+                    <div class="card-content">
+                        <h3 data-i18n="activ_1_title">Scuba & Macro Diving</h3>
+                        <p data-i18n="activ_1_desc">Dive deep into Bauan's rich waters and experience guided underwater expeditions suited for all skill levels.</p>
+                    </div>
+                </a>
+                <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTGL3JJ2tywLvpApba0uGbW3Qt41yjbWVspbxE0qlaeODWcG1Z8lVcpM&s=10" target="_blank" class="travel-card" style="text-decoration: none; color: inherit;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTGL3JJ2tywLvpApba0uGbW3Qt41yjbWVspbxE0qlaeODWcG1Z8lVcpM&s=10" alt="Batangas Lomi" class="card-img">
+                    <div class="card-content">
+                        <h3 data-i18n="activ_2_title">Food Trip: Batangas Lomi</h3>
+                        <p data-i18n="activ_2_desc">Savor piping hot, thick bowls of authentic Batangas lomi loaded with fresh toppings and local spices.</p>
+                    </div>
+                </a>
+                <a href="https://www.taraletsanywhere.com/wp-content/uploads/2024/08/snorkeling-with-jackfishes-1140x855.jpg" target="_blank" class="travel-card" style="text-decoration: none; color: inherit;">
+                    <img src="https://www.taraletsanywhere.com/wp-content/uploads/2024/08/snorkeling-with-jackfishes-1140x855.jpg" alt="Island Hopping" class="card-img">
+                    <div class="card-content">
+                        <h3 data-i18n="activ_3_title">Island Hopping</h3>
+                        <p data-i18n="activ_3_desc">Charter a local boat to explore hidden coves, white-sand strips, and crystal-clear swimming spots nearby.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. TRAVEL GUIDE VIEW -->
+    <div id="guide" class="window-view">
+        <div class="page-header">
+            <h1 data-i18n="guide_heading">Comprehensive Travel Guide</h1>
+            <p data-i18n="guide_subheading">Weather metrics, interactive GPS resort directions, cultural festivals, itineraries, and FAQs.</p>
+        </div>
+        <div class="content-container">
+            
+            <span class="section-tag" data-i18n="guide_gps_tag">Live GPS Navigation</span>
+            <h2 class="section-title" data-i18n="guide_gps_title">Find & Navigate to Bauan Resorts</h2>
+            <div class="gps-guide-box" style="background: #111827; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.04); margin-bottom: 60px;">
+                <p style="color: #9ca3af; margin-bottom: 20px; text-align: center;" data-i18n="guide_gps_desc">Use your live device GPS to calculate routes and distances to exclusive local resorts in Bauan.</p>
+                
+                <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap;">
+                    <select id="resortSelect" class="planner-select" style="max-width: 300px;">
+                        <option value="13.7850,121.0080">Seascape Resort (Sta. Maria)</option>
+                        <option value="13.7650,120.9450">Dive and Trek Resort & Sanctuary</option>
+                        <option value="13.7720,120.9810">Luzoy Beach Resort</option>
+                    </select>
+                    <button class="btn-primary" onclick="calculateRouteToResort()" data-i18n="guide_gps_btn">Get GPS Directions</button>
+                </div>
+
+                <div id="gpsOutput" style="background: #1f2937; padding: 20px; border-radius: 10px; text-align: center; display: none;">
+                    <h4 id="resortNameTitle" onclick="openDirectResortNavigation()" style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 8px; cursor: pointer; text-decoration: underline;" title="Tap to open directions"></h4>
+                    <p id="gpsStatusText" style="color: #d1d5db; font-size: 1rem;"></p>
+                    <a id="googleMapsLink" href="#" target="_blank" class="btn-primary" style="display: inline-block; margin-top: 15px; font-size: 0.9rem; padding: 10px 20px;" data-i18n="guide_gps_link">Open Turn-by-Turn in Google Maps</a>
+                </div>
+            </div>
+
+            <span class="section-tag" data-i18n="guide_weather_tag">Location & Climate</span>
+            <h2 class="section-title" data-i18n="guide_weather_title">Live Weather & Map Directory</h2>
+            <div class="info-grid">
+                <div class="widget-card">
+                    <h3><i class="fa-solid fa-cloud-sun"></i> <span data-i18n="weather_card_title">Bauan Weather Status</span></h3>
+                    <div class="weather-info">
+                        <div>
+                            <div class="weather-temp">30°C</div>
+                            <p style="color: #9ca3af;" data-i18n="weather_desc">Partly Cloudy</p>
+                        </div>
+                        <div style="text-align: left; color: #d1d5db; font-size: 0.95rem;">
+                            <p><i class="fa-solid fa-droplet" style="color:var(--accent-orange);"></i> <span data-i18n="weather_humidity">Humidity</span>: 72%</p>
+                            <p><i class="fa-solid fa-wind" style="color:var(--accent-orange);"></i> <span data-i18n="weather_wind">Wind</span>: 12 km/h</p>
+                            <p><i class="fa-solid fa-calendar-days" style="color:var(--accent-orange);"></i> <span data-i18n="weather_best">Best time</span>: Nov - May</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="widget-card">
+                    <h3><i class="fa-solid fa-map-location-dot"></i> <span data-i18n="map_card_title">Interactive Town Map</span></h3>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30948.33758117761!2d121.0029!3d13.7915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd05e7e1f1a5b3%3A0x8e8334a1789c670a!2sBauan%2C%20Batangas!5e0!3m2!1sen!2sph!4v1650000000000!5m2!1sen!2sph" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <span class="section-tag" data-i18n="planner_tag">Trip Planning</span>
+            <h2 class="section-title" data-i18n="planner_title">Interactive Itinerary Generator</h2>
+            <div class="planner-box">
+                <div class="planner-controls">
+                    <select id="durationSelect" class="planner-select">
+                        <option value="1" data-i18n="plan_opt_1">1-Day Day Trip</option>
+                        <option value="2" data-i18n="plan_opt_2">Weekend Getaway (2 Days)</option>
+                    </select>
+                    <select id="styleSelect" class="planner-select">
+                        <option value="adventure" data-i18n="plan_opt_adv">Extreme Adventure & Diving</option>
+                        <option value="relax" data-i18n="plan_opt_rel">Relaxed Beach & Food Trip</option>
+                    </select>
+                    <button class="btn-primary" onclick="generateItinerary()" data-i18n="plan_btn">Generate Plan</button>
+                </div>
+                <div class="itinerary-output" id="itineraryResult">
+                    <h4 data-i18n="plan_out_title">Select your preferences above and click Generate Plan!</h4>
+                    <p style="color: #9ca3af; font-size: 0.95rem;" data-i18n="plan_out_desc">Your customized custom travel schedule for Bauan will appear right here.</p>
+                </div>
+            </div>
+
+            <span class="section-tag" data-i18n="faq_tag">Got Questions?</span>
+            <h2 class="section-title" data-i18n="faq_title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question"><span data-i18n="faq_q1">How do I get to Bauan from Manila via public commute?</span> <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer" data-i18n="faq_a1">You can ride a bus from terminals in Cubao or Buendia headed straight to the Batangas City Grand Terminal. From the grand terminal, step out to catch a local jeepney bound directly for Bauan town proper.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><span data-i18n="faq_q2">Are there ATM services available in Bauan?</span> <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer" data-i18n="faq_a2">Yes, multiple major commercial banks and ATMs are stationed around the municipal center. However, it is always recommended to bring sufficient cash if you are visiting remote beach or diving resorts.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><span data-i18n="faq_q3">Do I need pre-booking for scuba diving packages?</span> <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer" data-i18n="faq_a3">While walk-ins are occasionally accommodated, pre-booking with certified local dive operators is strongly advised especially during weekends and peak dry season months to secure gear and instructors.</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 6. GALLERY VIEW -->
+    <div id="gallery" class="window-view">
+        <div class="page-header">
+            <h1 data-i18n="gallery_heading">Photo Gallery</h1>
+            <p data-i18n="gallery_subheading">Visual highlights capturing the beauty of Bauan.</p>
+        </div>
+        <div class="content-container">
+            <span class="section-tag" data-i18n="gallery_tag">Captured Moments</span>
+            <h2 class="section-title" data-i18n="gallery_title">Glimpses of Bauan</h2>
+            <div class="card-grid">
+                <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnQ_8ppTLLxOMRlEF2ceMs_kU0VcmcnQPmrgYNWEXopn5YbFnH3WAEkPusBmhxxFaspfcwgV_DelDmigumO6LP7Dw9NNKiBw4ldaOjC9Iym2n1A9ovIyLJ-mkdzCNH6ZYz3mfLEczCKgU/s1600/DSC_1491.jpeg" target="_blank" class="travel-card" style="display:block;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnQ_8ppTLLxOMRlEF2ceMs_kU0VcmcnQPmrgYNWEXopn5YbFnH3WAEkPusBmhxxFaspfcwgV_DelDmigumO6LP7Dw9NNKiBw4ldaOjC9Iym2n1A9ovIyLJ-mkdzCNH6ZYz3mfLEczCKgU/s1600/DSC_1491.jpeg" class="card-img"></a>
+                <a href="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/1b/f1/8c/simply-breathtaking.jpg?w=600&h=400&s=1" target="_blank" class="travel-card" style="display:block;"><img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/1b/f1/8c/simply-breathtaking.jpg?w=600&h=400&s=1" class="card-img"></a>
+                <a href="https://www.dronestagr.am/wp-content/uploads/2017/10/Bauan-Dive.jpg" target="_blank" class="travel-card" style="display:block;"><img src="https://www.dronestagr.am/wp-content/uploads/2017/10/Bauan-Dive.jpg" class="card-img"></a>
+                <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwL0DjXMjBIqS_SoPKyh66G7ooFBNL_UEs1WaN3of42w&s=10" target="_blank" class="travel-card" style="display:block;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwL0DjXMjBIqS_SoPKyh66G7ooFBNL_UEs1WaN3of42w&s=10" class="card-img"></a>
+                <a href="https://touristonline.travel.blog/wp-content/uploads/2019/08/bauan-3.jpg" target="_blank" class="travel-card" style="display:block;"><img src="https://touristonline.travel.blog/wp-content/uploads/2019/08/bauan-3.jpg" class="card-img"></a>
+                <a href="https://media-cdn.tripadvisor.com/media/photo-s/0c/12/5a/44/bauan-divers-sanctuary.jpg" target="_blank" class="travel-card" style="display:block;"><img src="https://media-cdn.tripadvisor.com/media/photo-s/0c/12/5a/44/bauan-divers-sanctuary.jpg" class="card-img"></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. REVIEWS VIEW -->
+    <div id="reviews" class="window-view">
+        <div class="page-header">
+            <h1 data-i18n="reviews_heading">Traveler Reviews</h1>
+            <p data-i18n="reviews_subheading">Read and share firsthand stories about your unforgettable trips to Bauan.</p>
+        </div>
+        <div class="content-container">
+            <span class="section-tag" data-i18n="reviews_tag">Testimonials & Submissions</span>
+            <h2 class="section-title" data-i18n="reviews_title">Community Experiences</h2>
+            
+            <div class="review-form-box">
+                <h3 data-i18n="form_heading"><i class="fa-solid fa-pen-to-square"></i> Share Your Bauan Experience</h3>
+                <form id="reviewForm" onsubmit="handleReviewSubmission(event)">
+                    <div class="form-row">
+                        <input type="text" id="reviewerName" placeholder="Your Name (e.g., Alex R.)" required>
+                        <select id="reviewRating" required>
+                            <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5 Excellent)</option>
+                            <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (4/5 Great)</option>
+                            <option value="⭐⭐⭐">⭐⭐⭐ (3/5 Good)</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="reviewTitle" placeholder="Review Title (e.g., Fantastic Reef Diving!)" required>
+                    </div>
+                    <div class="form-row">
+                        <textarea id="reviewComment" rows="3" placeholder="Tell us about your trip..." required></textarea>
+                    </div>
+                    <div class="form-row image-upload-row">
+                        <label for="reviewImageFile"><i class="fa-solid fa-image"></i> Upload Photo (Cloudinary Simulation)</label>
+                        <input type="file" id="reviewImageFile" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn-primary" data-i18n="form_submit">Post Review & Photo</button>
+                </form>
+            </div>
+
+            <div class="card-grid" id="dynamicReviewsContainer">
+                <a href="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=600&auto=format&fit=crop" target="_blank" class="travel-card" style="text-decoration: none; color: inherit; display:block;">
+                    <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=600&auto=format&fit=crop" class="card-img">
+                    <div class="card-content">
+                        <div style="color: #f39c12; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                        <h3>"An absolute paradise for divers!"</h3>
+                        <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 8px;">— Mark D.</p>
+                        <p>The marine life in Bauan is stunning. Visibility was amazing, and the local guides were incredibly helpful and welcoming.</p>
+                    </div>
+                </a>
+                <a href="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=600&auto=format&fit=crop" target="_blank" class="travel-card" style="text-decoration: none; color: inherit; display:block;">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=600&auto=format&fit=crop" class="card-img">
+                    <div class="card-content">
+                        <div style="color: #f39c12; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                        <h3>"Great food and warm people."</h3>
+                        <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 8px;">— Sarah M.</p>
+                        <p>Had the best Batangas lomi here. The coastline is gorgeous and peaceful, making it a wonderful weekend escape.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROBOT AI CHATBOT WIDGET -->
+    <div class="chat-widget">
+        <div class="chat-btn" id="chatBtn" title="Chat with AI Bot">
+            <i class="fa-solid fa-robot"></i>
+        </div>
+        
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-title-group">
+                    <i class="fa-solid fa-microchip chat-header-icon"></i>
+                    <span>Gemini Bauan-Bot</span>
+                </div>
+                <span class="close-btn" id="closeChatBtn">&times;</span>
+            </div>
+            
+            <div class="chat-body" id="chatBody">
+                <div class="bot-msg-wrapper">
+                    <div class="bot-msg-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="chat-message msg-bot" data-i18n="chat_welcome">
+                        🤖 Mabuhay! I am powered by Gemini. Ask me anything like "Plan a 3-day family trip to Bauan!"
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-footer">
+                <input type="text" id="userInput" placeholder="Ask Gemini assistant..." autocomplete="off">
+                <button id="sendBtn"><i class="fa-solid fa-terminal"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript File Link -->
+    <script src="script.js"></script>
+
+    <!-- Slide-out Drawer Hamburger Menu Functionality Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+
+        function toggleMenu() {
+          const isOpen = hamburgerBtn.classList.toggle('active');
+          menuOverlay.classList.toggle('open', isOpen);
+          hamburgerBtn.setAttribute('aria-expanded', isOpen);
+          menuOverlay.setAttribute('aria-hidden', !isOpen);
+        }
+
+        if (hamburgerBtn && menuOverlay) {
+          hamburgerBtn.addEventListener('click', toggleMenu);
+
+          // Close when clicking outside the menu sheet
+          menuOverlay.addEventListener('click', (e) => {
+            if (e.target === menuOverlay) {
+              toggleMenu();
+            }
+          });
+
+          // Close when clicking any nav link inside the slide-out drawer
+          const sheetLinks = document.querySelectorAll('.menu-sheet .nav-btn');
+          sheetLinks.forEach(link => {
+            link.addEventListener('click', () => {
+              if (menuOverlay.classList.contains('open')) {
+                toggleMenu();
+              }
+            });
+          });
+        }
+      });
+    </script>
+</body>
+</html>
